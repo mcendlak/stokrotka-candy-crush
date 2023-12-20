@@ -27,6 +27,8 @@ let finalScreen;
 let endGameBtn;
 let startOverBtn;
 
+let rearrangeBtn;
+
 let zamianaImg;
 let czasImg;
 
@@ -59,16 +61,26 @@ function init() {
   endGameBtn = document.getElementById("end-game-btn");
   startOverBtn = document.getElementById("start-over-btn");
 
+  rearrangeBtn = document.getElementById("rearrange");
+  rearrangeBtn.addEventListener("click", function () {
+    rearrangeBoard();
+  });
+
   endGameBtn.addEventListener("click", function () {
     window.open("https://www.stokrotka.com.pl", "_blank");
   });
 
-  function restartGame() {
+  function rearrangeBoard() {
+    fromUser = false;
     board = [];
     while (grid.firstChild) {
       grid.removeChild(grid.firstChild);
     }
     initGame();
+  }
+
+  function restartGame() {
+    rearrangeBoard();
     startGame();
   }
 
@@ -208,6 +220,9 @@ function dragEnd() {
       otherTileImgEl.src = currImgSrc;
     }
   }
+
+  userTouched = true;
+  fromUser = true;
 }
 
 function updateRecord() {
@@ -239,8 +254,10 @@ function crushThree() {
         candy1.src = "./img/icons/blank.png";
         candy2.src = "./img/icons/blank.png";
         candy3.src = "./img/icons/blank.png";
-        score += 30;
-        updateRecord();
+        if (userTouched && fromUser) {
+          score += 30;
+          updateRecord();
+        }
       }
     }
   }
@@ -259,8 +276,10 @@ function crushThree() {
         candy1.src = "./img/icons/blank.png";
         candy2.src = "./img/icons/blank.png";
         candy3.src = "./img/icons/blank.png";
-        score += 30;
-        updateRecord();
+        if (userTouched && fromUser) {
+          score += 30;
+          updateRecord();
+        }
       }
     }
   }
