@@ -142,12 +142,13 @@ function initGame() {
       tileIcon.src = "./img/icons/" + randomCandy() + ".png";
       tileIcon.classList.add("tile-icon");
 
-      tile.addEventListener("dragstart", dragStart);
-      tile.addEventListener("dragover", dragOver);
-      tile.addEventListener("dragenter", dragEnter);
-      tile.addEventListener("dragleave", dragLeave);
-      tile.addEventListener("drop", dragDrop);
-      tile.addEventListener("dragend", dragEnd);
+      tile.addEventListener("mousedown", mouseDown);
+      tile.addEventListener("mousemove", mouseMove);
+      tile.addEventListener("mouseup", mouseUp);
+
+      tile.addEventListener("touchstart", touchStart);
+      tile.addEventListener("touchmove", touchMove);
+      tile.addEventListener("touchend", touchEnd);
 
       grid.append(tile);
       row.push(tile);
@@ -158,8 +159,56 @@ function initGame() {
   console.log(board);
 }
 
-function dragStart() {
+// let currTile = null;
+// let otherTile = null;
+
+function mouseDown(e) {
+  e.preventDefault();
   currTile = this;
+}
+
+function mouseMove(e) {
+  e.preventDefault();
+  // Dodaj tutaj kod obsługi przesuwania elementu w trakcie przesuwania myszą
+}
+
+function mouseUp(e) {
+  e.preventDefault();
+  otherTile = e.target;
+
+  if (currTile && otherTile) {
+    // Kontynuuj zdarzenia dotyczące zamiany miejsc
+    dragEnd();
+  }
+}
+
+function touchStart(e) {
+  e.preventDefault();
+  currTile = this;
+}
+
+function touchMove(e) {
+  e.preventDefault();
+  // Dodaj tutaj kod obsługi przesuwania elementu w trakcie przesuwania dotyku
+}
+
+function touchEnd(e) {
+  e.preventDefault();
+  const tempOtherTile = document.elementFromPoint(
+    e.changedTouches[0].clientX,
+    e.changedTouches[0].clientY
+  );
+
+  if (tempOtherTile.tagName === "IMG") {
+    otherTile = tempOtherTile.parentNode;
+  } else {
+    otherTile = tempOtherTile;
+  }
+
+  if (currTile && otherTile) {
+    // Kontynuuj zdarzenia dotyczące zamiany miejsc
+    dragEnd();
+  }
 }
 
 function dragOver(e) {
@@ -173,6 +222,7 @@ function dragEnter(e) {
 function dragLeave(e) {
   // e.preventDefault();
 }
+
 function dragDrop() {
   otherTile = this;
 }
