@@ -38,6 +38,9 @@ let timerInterval;
 let seconds = 0;
 let minutes = 0; // Zaczynamy od 02:00 minut
 
+let userTouched;
+let fromUser;
+
 function isMobile() {
   return (
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -162,29 +165,6 @@ function initGame() {
   console.log(board);
 }
 
-// let currTile = null;
-// let otherTile = null;
-
-// function mouseDown(e) {
-//   e.preventDefault();
-//   currTile = this;
-// }
-
-// function mouseMove(e) {
-//   e.preventDefault();
-//   // Dodaj tutaj kod obsługi przesuwania elementu w trakcie przesuwania myszą
-// }
-
-// function mouseUp(e) {
-//   e.preventDefault();
-//   otherTile = e.target;
-
-//   if (currTile && otherTile) {
-//     // Kontynuuj zdarzenia dotyczące zamiany miejsc
-//     dragEnd();
-//   }
-// }
-
 function touchStart(e) {
   e.preventDefault();
   currTile = this;
@@ -236,16 +216,15 @@ function dragDrop() {
 
 function dragEnd() {
   let currTileEl = document.getElementById(currTile.id);
-  const curCoords = currTileEl.id.split("-");
-  let r = parseInt(curCoords[0]);
-  let c = parseInt(curCoords[1]);
-  const currTileImgEl = currTileEl.firstChild;
-
   let otherTileEl = document.getElementById(otherTile.id);
-  const otherCoords = otherTileEl.id.split("-");
-  let r2 = parseInt(otherCoords[0]);
-  let c2 = parseInt(otherCoords[1]);
-  const otherTileImgEl = otherTileEl.firstChild;
+  swapTiles(currTileEl, otherTileEl);
+  userTouched = true;
+  fromUser = true;
+}
+
+function swapTiles(tile1, tile2) {
+  const currTileImgEl = tile1.firstChild;
+  const otherTileImgEl = tile2.firstChild;
 
   if (
     currTileImgEl.src.includes("blank") ||
@@ -254,32 +233,24 @@ function dragEnd() {
     return;
   }
 
-  const moveLeft = c2 === c - 1 && r === r2;
-  const moveRight = c2 === c + 1 && r == r2;
-  const moveUp = r2 === r - 1 && c === c2;
-  const moveDown = r2 === r + 1 && c === c2;
+  const currImgSrc = currTileImgEl.src;
+  const otherImgSrc = otherTileImgEl.src;
 
-  const isAdjacent = moveDown || moveLeft || moveUp || moveRight;
+  currTileImgEl.src = otherImgSrc;
+  otherTileImgEl.src = currImgSrc;
 
-  if (isAdjacent) {
-    let currImgSrc = currTileImgEl.src;
-    let otherImgSrc = otherTileImgEl.src;
+  const validMove = checkValid();
 
-    currTileImgEl.src = otherImgSrc;
-    otherTileImgEl.src = currImgSrc;
-
-    const validMove = checkValid();
-    if (!validMove) {
-      let currImgSrc = currTileImgEl.src;
-      let otherImgSrc = otherTileImgEl.src;
-
-      currTileImgEl.src = otherImgSrc;
-      otherTileImgEl.src = currImgSrc;
-    }
+  if (!validMove) {
+    currTileImgEl.src = currImgSrc;
+    otherTileImgEl.src = otherImgSrc;
   }
 
-  userTouched = true;
-  fromUser = true;
+  // Dodaj klasę explode tylko jeśli elementy zostały zamienione
+  if (validMove) {
+    // tile1.classList.add("explode");
+    // tile2.classList.add("explode");
+  }
 }
 
 function updateRecord() {
@@ -299,19 +270,25 @@ function crushCandy() {
 function crushThree() {
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < columns - 2; c++) {
-      let candy1 = board[r][c].firstChild;
-      let candy2 = board[r][c + 1].firstChild;
-      let candy3 = board[r][c + 2].firstChild;
+      let candy1 = board[r][c];
+      let candy2 = board[r][c + 1];
+      let candy3 = board[r][c + 2];
 
       if (
-        candy1.src === candy2.src &&
-        candy2.src === candy3.src &&
-        !candy1.src.includes("blank")
+        candy1.firstChild.src === candy2.firstChild.src &&
+        candy2.firstChild.src === candy3.firstChild.src &&
+        !candy1.firstChild.src.includes("blank")
       ) {
-        candy1.src = "./img/icons/blank.png";
-        candy2.src = "./img/icons/blank.png";
-        candy3.src = "./img/icons/blank.png";
-        if (userTouched && fromUser) {
+        candy1.firstChild.src = "./img/icons/blank.png";
+        candy2.firstChild.src = "./img/icons/blank.png";
+        candy3.firstChild.src = "./img/icons/blank.png";
+
+        // Dodaj klasę explode tylko jeśli elementy zostały zmienione
+        candy1.classList.add("explode");
+        candy2.classList.add("explode");
+        candy3.classList.add("explode");
+
+        if (userTouched) {
           score += 30;
           updateRecord();
         }
@@ -321,19 +298,25 @@ function crushThree() {
 
   for (let c = 0; c < columns; c++) {
     for (let r = 0; r < rows - 2; r++) {
-      let candy1 = board[r][c].firstChild;
-      let candy2 = board[r + 1][c].firstChild;
-      let candy3 = board[r + 2][c].firstChild;
+      let candy1 = board[r][c];
+      let candy2 = board[r + 1][c];
+      let candy3 = board[r + 2][c];
 
       if (
-        candy1.src === candy2.src &&
-        candy2.src === candy3.src &&
-        !candy1.src.includes("blank")
+        candy1.firstChild.src === candy2.firstChild.src &&
+        candy2.firstChild.src === candy3.firstChild.src &&
+        !candy1.firstChild.src.includes("blank")
       ) {
-        candy1.src = "./img/icons/blank.png";
-        candy2.src = "./img/icons/blank.png";
-        candy3.src = "./img/icons/blank.png";
-        if (userTouched && fromUser) {
+        candy1.firstChild.src = "./img/icons/blank.png";
+        candy2.firstChild.src = "./img/icons/blank.png";
+        candy3.firstChild.src = "./img/icons/blank.png";
+
+        // Dodaj klasę explode tylko jeśli elementy zostały zmienione
+        candy1.classList.add("explode");
+        candy2.classList.add("explode");
+        candy3.classList.add("explode");
+
+        if (userTouched) {
           score += 30;
           updateRecord();
         }

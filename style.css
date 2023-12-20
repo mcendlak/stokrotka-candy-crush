@@ -283,7 +283,7 @@ body {
   height: 20px;
   background-color: red; /* Kolor strzałki */
   -webkit-clip-path: polygon(0 0, 100% 0, 50% 100%);
-          clip-path: polygon(0 0, 100% 0, 50% 100%);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
   transform: translate(-50%, -50%);
   pointer-events: none; /* Zapobiega interakcji z dotykiem */
   z-index: 9999; /* Umieść na wierzchu */
@@ -323,4 +323,19 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: center;
-}/*# sourceMappingURL=style.css.map */
+} /*# sourceMappingURL=style.css.map */
+
+@keyframes explode {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.explode {
+  animation: explode 0.3s ease-in-out;
+}
