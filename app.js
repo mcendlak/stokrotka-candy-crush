@@ -97,7 +97,6 @@ function init() {
 
   localStorage.setItem("record", record);
   document.getElementById("record").innerText = record;
-
 }
 
 window.onload = () => {
@@ -140,7 +139,7 @@ function initGame() {
       tile.classList.add("dark-blue-bg");
       const tileIcon = document.createElement("img");
       tile.append(tileIcon);
-      tileIcon.src = "./img/icons/" + randomCandy() + ".png";
+      tileIcon.src = "./img/icons/" + randomCandy() + ".svg";
       tileIcon.classList.add("tile-icon");
 
       tile.addEventListener("dragstart", dragStart);
@@ -193,7 +192,7 @@ function touchStart(e) {
 
 function touchMove(e) {
   e.preventDefault();
-// Dodaj tutaj kod obsługi przesuwania elementu w trakcie przesuwania dotyku
+  // Dodaj tutaj kod obsługi przesuwania elementu w trakcie przesuwania dotyku
 }
 
 function touchEnd(e) {
@@ -398,7 +397,7 @@ function slideCandy() {
 function generateCandy() {
   for (let c = 0; c < columns; c++) {
     if (board[0][c].firstChild.src.includes("blank")) {
-      board[0][c].firstChild.src = "./img/icons/" + randomCandy() + ".png";
+      board[0][c].firstChild.src = "./img/icons/" + randomCandy() + ".svg";
     }
   }
 }
