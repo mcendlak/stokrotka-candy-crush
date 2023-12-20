@@ -67,7 +67,7 @@ function init() {
   });
 
   endGameBtn.addEventListener("click", function () {
-    window.open("https://www.stokrotka.com.pl", "_blank");
+    window.open("https://www.imagomed.pl", "_blank");
   });
 
   function rearrangeBoard() {
