@@ -97,6 +97,7 @@ function init() {
 
   localStorage.setItem("record", record);
   document.getElementById("record").innerText = record;
+
 }
 
 window.onload = () => {
@@ -142,9 +143,12 @@ function initGame() {
       tileIcon.src = "./img/icons/" + randomCandy() + ".png";
       tileIcon.classList.add("tile-icon");
 
-      tile.addEventListener("mousedown", mouseDown);
-      tile.addEventListener("mousemove", mouseMove);
-      tile.addEventListener("mouseup", mouseUp);
+      tile.addEventListener("dragstart", dragStart);
+      tile.addEventListener("dragover", dragOver);
+      tile.addEventListener("dragenter", dragEnter);
+      tile.addEventListener("dragleave", dragLeave);
+      tile.addEventListener("drop", dragDrop);
+      tile.addEventListener("dragend", dragEnd);
 
       tile.addEventListener("touchstart", touchStart);
       tile.addEventListener("touchmove", touchMove);
@@ -162,25 +166,25 @@ function initGame() {
 // let currTile = null;
 // let otherTile = null;
 
-function mouseDown(e) {
-  e.preventDefault();
-  currTile = this;
-}
+// function mouseDown(e) {
+//   e.preventDefault();
+//   currTile = this;
+// }
 
-function mouseMove(e) {
-  e.preventDefault();
-  // Dodaj tutaj kod obsługi przesuwania elementu w trakcie przesuwania myszą
-}
+// function mouseMove(e) {
+//   e.preventDefault();
+//   // Dodaj tutaj kod obsługi przesuwania elementu w trakcie przesuwania myszą
+// }
 
-function mouseUp(e) {
-  e.preventDefault();
-  otherTile = e.target;
+// function mouseUp(e) {
+//   e.preventDefault();
+//   otherTile = e.target;
 
-  if (currTile && otherTile) {
-    // Kontynuuj zdarzenia dotyczące zamiany miejsc
-    dragEnd();
-  }
-}
+//   if (currTile && otherTile) {
+//     // Kontynuuj zdarzenia dotyczące zamiany miejsc
+//     dragEnd();
+//   }
+// }
 
 function touchStart(e) {
   e.preventDefault();
@@ -189,7 +193,7 @@ function touchStart(e) {
 
 function touchMove(e) {
   e.preventDefault();
-  // Dodaj tutaj kod obsługi przesuwania elementu w trakcie przesuwania dotyku
+// Dodaj tutaj kod obsługi przesuwania elementu w trakcie przesuwania dotyku
 }
 
 function touchEnd(e) {
@@ -209,6 +213,10 @@ function touchEnd(e) {
     // Kontynuuj zdarzenia dotyczące zamiany miejsc
     dragEnd();
   }
+}
+
+function dragStart() {
+  currTile = this;
 }
 
 function dragOver(e) {
