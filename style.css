@@ -1,11 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap");
 body {
-  /* background-color: #00209c; */
   background: url("./img/background/background.png");
   background-position: top;
   font-family: "Montserrat", sans-serif;
   color: white;
   text-align: center;
+  box-sizing: border-box;
+  margin: 0;
 }
 
 .container {
@@ -13,8 +14,137 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 98vh;
-  overflow: hidden;
+  height: 100vh;
+  position: relative;
+}
+.container #backdrop {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  z-index: 2;
+}
+.container #welcome-screen {
+  position: absolute;
+  z-index: 3;
+  background-color: #00209c;
+  width: 80%;
+  max-width: 900px;
+  height: 85%;
+  padding: 30px 70px;
+  font-size: 0.8rem;
+}
+@media (max-width: 480px) {
+  .container #welcome-screen {
+    padding: 30px;
+  }
+}
+.container #welcome-screen h1 {
+  margin-top: 0;
+}
+.container #welcome-screen .img-container {
+  width: 250px;
+}
+@media (max-width: 480px) {
+  .container #welcome-screen .img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+  }
+}
+.container #welcome-screen .label {
+  display: flex;
+  align-items: center;
+  width: 400px;
+  text-align: left;
+  padding-left: 50px;
+}
+.container #welcome-screen #zamiana-img {
+  width: 250px;
+}
+@media (max-width: 480px) {
+  .container #welcome-screen #zamiana-img {
+    width: 120px;
+  }
+}
+.container #welcome-screen #czas-img {
+  width: 150px;
+}
+.container #welcome-screen .start-game-btn {
+  width: 350px;
+}
+@media (max-width: 480px) {
+  .container #welcome-screen .screen-btn {
+    font-size: 1rem;
+    height: 40px;
+    width: auto;
+  }
+}
+.container #final-screen {
+  position: absolute;
+  z-index: 3;
+  background-color: #00209c;
+  width: 80%;
+  max-width: 900px;
+  height: 85%;
+  padding: 30px 70px;
+}
+@media (max-width: 480px) {
+  .container #final-screen {
+    padding: 30px;
+  }
+}
+.container #final-screen .description {
+  line-height: 1.4rem;
+}
+.container #final-screen .result {
+  margin: 0;
+  font-size: 160px;
+  font-weight: 700;
+}
+.container #final-screen .screen-btn {
+  padding: 0 30px;
+}
+@media (max-width: 480px) {
+  .container #final-screen h1 {
+    font-size: 1.8rem;
+  }
+  .container #final-screen .result {
+    font-size: 100px;
+  }
+  .container #final-screen .description {
+    margin: 0;
+  }
+  .container #final-screen .question {
+    font-size: 1rem;
+  }
+  .container #final-screen .row {
+    flex-direction: column;
+  }
+  .container #final-screen .screen-btn {
+    font-size: 1rem;
+    height: 40px;
+  }
+}
+.container .screen-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px dashed white;
+  height: 60px;
+  margin: 20px auto 0;
+  text-transform: uppercase;
+  font-size: 1.8rem;
+  font-weight: 800;
+  border-radius: 30px;
+  cursor: pointer;
+}
+.container .screen-btn--light {
+  background-color: #0041ff;
+}
+.container .invisible {
+  display: none;
 }
 .container .wrapper {
   width: 80%;
@@ -40,6 +170,7 @@ body {
 }
 .container .wrapper .scoreboard__item__label {
   margin-left: 25px;
+  font-weight: 600;
 }
 .container .wrapper .scoreboard__item__value {
   display: flex;
@@ -50,6 +181,7 @@ body {
   width: 120;
   border-radius: 40px;
   margin-top: 5px;
+  font-weight: 600;
 }
 .container .wrapper .scoreboard .footer-logo {
   margin-top: 70px;
@@ -75,6 +207,61 @@ body {
   width: auto;
   height: 80%;
 }
+@media (max-width: 480px) {
+  .container .wrapper {
+    flex-direction: column;
+    gap: 60px;
+  }
+  .container .wrapper .scoreboard {
+    margin-top: 20px;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+    font-size: 0.8rem;
+  }
+  .container .wrapper .scoreboard__item {
+    margin: 10px 0 0;
+  }
+  .container .wrapper .scoreboard__item__label {
+    font-size: 0.8rem;
+  }
+  .container .wrapper .scoreboard__item__value {
+    font-size: 0.8rem;
+    height: 30px;
+    width: 100px;
+    border-radius: 15px;
+    margin-top: 5px;
+  }
+  .container .wrapper .scoreboard .footer-logo {
+    display: none;
+  }
+  .container .wrapper .grid {
+    display: grid;
+    grid-template-columns: repeat(6, 40px);
+    grid-template-rows: repeat(5, 40px);
+    gap: 10px;
+    height: 100%;
+    width: auto;
+    justify-content: center;
+  }
+  .container .wrapper .grid .tile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+  }
+  .container .wrapper .grid .tile .tile-icon {
+    width: auto;
+    height: 80%;
+  }
+  .container .wrapper .footer-logo {
+    display: block;
+    width: 50%;
+    margin: 0 auto;
+  }
+}
 
 .dark-blue-bg {
   background-color: #001875;
@@ -82,4 +269,28 @@ body {
 
 .centered-div {
   display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.t700 {
+  font-weight: 700;
+}
+
+.t600 {
+  font-weight: 600;
+}
+
+.t500 {
+  font-weight: 500;
+}
+
+.t-m {
+  font-size: 1.8rem;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }/*# sourceMappingURL=style.css.map */

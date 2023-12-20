@@ -10,20 +10,85 @@
 
   <body>
     <div class="container centered-div">
+      <div id="backdrop"></div>
+      <div id="welcome-screen">
+        <h1>Ho Ho Ho!</h1>
+        <p>
+          Witaj w naszej świątecznej grze
+          <span class="t700">Piernikowe Puzzle</span>!
+        </p>
+        <p>
+          Przygotuj się na barwną przygodę z symbolami świątecznymi,<br />która
+          doda magii do Twoich światecznych chwil.
+        </p>
+        <div class="row">
+          <div class="img-container">
+            <img src="#" alt="zamiana" id="zamiana-img" />
+          </div>
+          <div class="label">
+            <p>
+              <span class="t700">Dopasuj trzy</span> elementy świąteczne w
+              pionie<br />
+              lub poziomie, aby zdobywać punkty
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="img-container">
+            <img src="#" alt="czas" id="czas-img" />
+          </div>
+          <div class="label">
+            <p>
+              Masz <span class="t700">2 minuty</span> na ułożenie jak najwięcej
+              <br />kombinacji i zdobycie rekordowej liczy punktów
+            </p>
+          </div>
+        </div>
+        <p class="t700">
+          Zdobądź jak najwięcej punktów, by stać się Piernikowym Mistrzem!
+        </p>
+        <p>Powodzenia i niech magia świąt będzie z Tobą!</p>
+        <div
+          class="start-game-btn screen-btn screen-btn--light"
+          id="start-game-btn"
+        >
+          rozpocznij grę
+        </div>
+      </div>
+      <div id="final-screen" class="invisible">
+        <h1>Gratulacje!</h1>
+        <p>Twoja końcowa liczba punktów to:</p>
+        <p class="result" id="result">10</p>
+
+        <p class="description">
+          Wykazałeś się niesamowitym talentem w dopasowywaniu<br />świątecznych
+          symboli! Każdy Twój ruch przybliżył Cię o krok bliżej<br />do zostania
+          <span class="t700">Piernikowym Mistrzem</span>.
+        </p>
+
+        <p class="t700 t-m question">Czy masz ochotę spróbować jeszcze raz?</p>
+
+        <div class="row">
+          <div class="end-game-btn screen-btn screen-btn" id="end-game-btn">
+            zakończ grę
+          </div>
+          <div
+            class="start-over-btn screen-btn screen-btn--light"
+            id="start-over-btn"
+          >
+            spróbuj jeszcze raz
+          </div>
+        </div>
+      </div>
       <div class="wrapper">
         <div id="scoreboard" class="scoreboard">
           <div class="scoreboard__item">
-            <!-- <div>
-                    <button id="start">Start</button>
-                    <button id="stop">Stop</button>
-                    <button id="reset">Reset</button>
-                  </div> -->
             <div class="scoreboard__item__label">czas</div>
             <div
               id="timer"
               class="scoreboard__item__value scoreboard__item__value--timer dark-blue-bg"
             >
-              00:00
+              02:00
             </div>
           </div>
           <div class="scoreboard__item">
@@ -42,6 +107,9 @@
         </div>
 
         <div id="grid" class="grid"></div>
+        <div class="footer-logo">
+          <img src="./img/background/logo.svg" alt="logo stokrotka" />
+        </div>
       </div>
     </div>
   </body>

@@ -8,32 +8,113 @@ const candies = [
   "swiateczny_ostrokrzew",
 ];
 
-// const emptyTiles = ["0-0", "0-5", "4-0", "4-5"];
-
-const board = [];
+let board = [];
 
 const rows = 5;
 const columns = 6;
 let score = 0;
-let record = 0;
+let record = localStorage.getItem("record") || 0;
+
+let grid;
 
 let currTile;
 let otherTile;
 
+let backdrop;
+let welcomeScreen;
+let startGameBtn;
+let finalScreen;
+let endGameBtn;
+let startOverBtn;
+
+let zamianaImg;
+let czasImg;
+
+let intervalId;
+
+let timerInterval;
+let seconds = 0;
+let minutes = 0; // Zaczynamy od 02:00 minut
+
+function isMobile() {
+  return (
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    ) || window.innerWidth <= 768
+  );
+}
+
+function init() {
+  grid = document.getElementById("grid");
+  backdrop = document.getElementById("backdrop");
+
+  welcomeScreen = document.getElementById("welcome-screen");
+  startGameBtn = document.getElementById("start-game-btn");
+
+  startGameBtn.addEventListener("click", function () {
+    startGame();
+  });
+
+  finalScreen = document.getElementById("final-screen");
+  endGameBtn = document.getElementById("end-game-btn");
+  startOverBtn = document.getElementById("start-over-btn");
+
+  endGameBtn.addEventListener("click", function () {
+    window.open("https://www.stokrotka.com.pl", "_blank");
+  });
+
+  function restartGame() {
+    board = [];
+    while (grid.firstChild) {
+      grid.removeChild(grid.firstChild);
+    }
+    initGame();
+    startGame();
+  }
+
+  startOverBtn.addEventListener("click", function () {
+    restartGame();
+  });
+
+  zamianaImg = document.getElementById("zamiana-img");
+  czasImg = document.getElementById("czas-img");
+
+  const imgPath = "./img/assets/";
+  zamianaImg.src = imgPath + (isMobile() ? "zamiana-mobi" : "zamiana") + ".svg";
+  czasImg.src = imgPath + (isMobile() ? "czas-mobi" : "czas") + ".png";
+
+  localStorage.setItem("record", record);
+  document.getElementById("record").innerText = record;
+}
+
 window.onload = () => {
-  startGame();
-  window.setInterval(function () {
+  init();
+  initGame();
+};
+
+function startGame() {
+  score = 0;
+  backdrop.classList.add("invisible");
+  welcomeScreen.classList.add("invisible");
+  if (!finalScreen.classList.contains("invisible")) {
+    finalScreen.classList.add("invisible");
+  }
+
+  minutes = 2;
+  startTimer();
+
+  intervalId = window.setInterval(function () {
     crushCandy();
     slideCandy();
     generateCandy();
   }, 100);
-};
+}
 
 function randomCandy() {
   return candies[Math.floor(Math.random() * candies.length)];
 }
 
-function startGame() {
+function initGame() {
   for (let r = 0; r < rows; r++) {
     let row = [];
 
@@ -56,12 +137,10 @@ function startGame() {
       tile.addEventListener("drop", dragDrop);
       tile.addEventListener("dragend", dragEnd);
 
-      document.getElementById("grid").append(tile);
+      grid.append(tile);
       row.push(tile);
     }
     board.push(row);
-
-    startTimer();
   }
 
   console.log(board);
@@ -131,6 +210,15 @@ function dragEnd() {
   }
 }
 
+function updateRecord() {
+  if (score > record) {
+    record = score;
+    localStorage.setItem("record", record);
+  }
+
+  document.getElementById("record").innerText = record;
+}
+
 function crushCandy() {
   crushThree();
   document.getElementById("score").innerText = score;
@@ -152,6 +240,7 @@ function crushThree() {
         candy2.src = "./img/icons/blank.png";
         candy3.src = "./img/icons/blank.png";
         score += 30;
+        updateRecord();
       }
     }
   }
@@ -171,6 +260,7 @@ function crushThree() {
         candy2.src = "./img/icons/blank.png";
         candy3.src = "./img/icons/blank.png";
         score += 30;
+        updateRecord();
       }
     }
   }
@@ -236,10 +326,14 @@ function generateCandy() {
   }
 }
 
+function endGame() {
+  clearInterval(intervalId);
+  backdrop.classList.remove("invisible");
+  finalScreen.classList.remove("invisible");
+  document.getElementById("result").innerText = score;
+}
+
 // TIMER
-let timerInterval;
-let seconds = 0;
-let minutes = 0;
 
 function startTimer() {
   if (!timerInterval) {
@@ -255,20 +349,23 @@ function stopTimer() {
 function resetTimer() {
   stopTimer();
   seconds = 0;
-  minutes = 0;
+  minutes = 2;
   updateTimerDisplay();
 }
 
 function updateTimer() {
-  seconds++;
-  if (seconds === 60) {
-    seconds = 0;
-    minutes++;
-    if (minutes === 60) {
-      minutes = 0;
+  if (minutes === 0 && seconds === 0) {
+    stopTimer();
+    endGame();
+  } else {
+    if (seconds === 0) {
+      seconds = 59;
+      minutes--;
+    } else {
+      seconds--;
     }
+    updateTimerDisplay();
   }
-  updateTimerDisplay();
 }
 
 function updateTimerDisplay() {
