@@ -288,7 +288,7 @@ function crushThree() {
         candy2.classList.add("explode");
         candy3.classList.add("explode");
 
-        if (userTouched) {
+        if (userTouched && fromUser) {
           score += 30;
           updateRecord();
         }
@@ -316,7 +316,7 @@ function crushThree() {
         candy2.classList.add("explode");
         candy3.classList.add("explode");
 
-        if (userTouched) {
+        if (userTouched && fromUser) {
           score += 30;
           updateRecord();
         }
